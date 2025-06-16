@@ -9,23 +9,27 @@ def clear():
 def render(player_hp, enemy_hp, player_cards, enemy_cards):
     clear()
     print("===== โจมตีแบบเทิร์นเบส (Text UI ไทย) =====\n")
+
     # แสดงศัตรู (หันหน้าเข้าหาเรา จากมุมขวา)
     print(" " * 40 + "  ๆ  " + f"(HP: {enemy_hp})")
     print(" " * 37 + " /█\\ ")
     print(" " * 37 + " / \\ \n")
+
     # พื้นที่กลาง
     print("-" * 50)
     print()
+
     # แสดงเรา (หันหน้ามาซ้าย)
     print(f"๐  (HP: {player_hp})")
     print("/█\\")
     print("/ \\ \n")
+
     # แสดงการ์ด
     print("การ์ดของคุณ:")
     for i, c in enumerate(player_cards, 1):
         print(f"{i}. {c['name']} ({c['type']} {c['value']})")
+
     print("\nการ์ดของศัตรู:")
-    # ศัตรูไม่เห็นการ์ดจริงของเรา — แต่แสดงจำนวนการ์ดสุ่ม
     for i, c in enumerate(enemy_cards, 1):
         print(f"{i}. ?")
     print()
@@ -58,9 +62,9 @@ turn = 1
 while True:
     player_hand = draw_hand()
     enemy_hand = draw_hand()
-    
+
     render(player["hp"], enemy["hp"], player_hand, enemy_hand)
-    
+
     # เทิร์นผู้เล่น
     choice = None
     while choice not in [1, 2, 3]:
@@ -68,22 +72,24 @@ while True:
             choice = int(input("เลือกการ์ดของคุณ [1-3]: "))
         except ValueError:
             continue
-    
+
     selected = player_hand[choice - 1]
     apply_card(selected, player, enemy)
     time.sleep(1)
+
     if enemy["hp"] <= 0:
         print("\n🎉 คุณชนะแล้ว! 🎉")
         break
-    
+
     # เทิร์นศัตรู (สุ่มเลือกการ์ด)
     enemy_choice = random.choice(enemy_hand)
     apply_card(enemy_choice, enemy, player)
     time.sleep(1)
+
     if player["hp"] <= 0:
         print("\n💥 คุณแพ้แล้ว! 💥")
         break
-    
+
     turn += 1
     print("\n--- เทิร์นถัดไป ---\n")
     time.sleep(1.5)
